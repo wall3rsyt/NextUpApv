@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextUp Roleplay - APV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100vh;
+        }
+        
+        /* Sidebar Stijlen */
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #1a2a3a, #2c3e50);
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h2 {
+            padding: 0 20px;
+            margin-bottom: 20px;
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item:hover {
+            background-color: #34495e;
+            border-left: 4px solid #3498db;
+        }
+        
+        .nav-item.active {
+            background-color: #2980b9;
+            border-left: 4px solid #e74c3c;
+            font-weight: bold;
+        }
+        
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Hoofdinhoud Stijlen */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            margin-left: 300px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Sectie Stijlen */
+        .section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        .section h3 {
+            color: #2980b9;
+            margin: 20px 0 10px;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+        }
+        
+        /* Tabel Stijlen */
+        .sanction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .sanction-table th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        .sanction-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sanction-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .sanction-table tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        /* Code Blok Stijlen */
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        /* Voetnoten */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Responsief ontwerp */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigatie -->
+        <div class="sidebar">
+            <h2>NextUp Roleplay APV</h2>
+            <div class="nav-item active" data-section="inleiding">
+                <i>①</i> Inleiding & Werking
+            </div>
+            <div class="nav-item" data-section="sancties">
+                <i>②</i> Sanctiecategorieën
+            </div>
+            <div class="nav-item" data-section="cheats">
+                <i>③</i> Cheats & Exploits
+            </div>
+            <div class="nav-item" data-section="roleplay">
+                <i>④</i> Roleplay - Regels
+            </div>
+            <div class="nav-item" data-section="voertuigen">
+                <i>⑤</i> Voertuigen
+            </div>
+            <div class="nav-item" data-section="wapens">
+                <i>⑥</i> Wapens
+            </div>
+            <div class="nav-item" data-section="algemene">
+                <i>⑦</i> Algemene Regels
+            </div>
+            <div class="nav-item" data-section="staff">
+                <i>⑧</i> Staffzaken
+            </div>
+            <div class="nav-item" data-section="slotbepaling">
+                <i>⑨</i> Slotbepalingen
+            </div>
+        </div>
+        
+        <!-- Hoofdinhoud -->
+        <div class="main-content">
+            <div class="header">
+                <h1>NextUp Roleplay - Algemene Policy Verordening (APV)</h1>
+                <p>Deze APV geldt voor alle spelers, staff en bezoekers van NextUp Roleplay.</p>
+            </div>
+            
+            <!-- Sectie: Inleiding & Werking -->
+            <div id="inleiding" class="section">
+                <h2>1. Inleiding & Werking</h2>
+                <p>Deze APV geldt voor alle spelers, staff en bezoekers van NextUp Roleplay.</p>
+                
+                <h3>Belangrijke Principes</h3>
+                <ul>
+                    <li>De 9 sanctiecategorieën zijn richtlijnen; staff kan met motivatie afwijken in redelijkheid en billijkheid.</li>
+                    <li>Hoofd‑/Senior‑staff (Limited & Wall3rs) mogen preventieve maatregelen nemen wanneer de veiligheid of het belang van meerdere spelers op het spel staat.</li>
+                    <li>Regels kunnen gewijzigd worden; staff mag sancties opleggen op gebeurtenissen die logisch onder een artikel vallen, ook als ze niet expliciet vermeld staan.</li>
+                    <li>Behandeling van staffzaken gebeurt op basis van feiten, logs en/of eigen perspectief. Het is <strong>verplicht</strong> om je eigen POV‑clip/recording bij te houden voor je eigen bescherming.</li>
+                    <li>In de stad wordt <strong>Nederlands of Engels</strong> gesproken; andere talen zijn niet toegestaan.</li>
+                </ul>
+            </div>
+            
+            <!-- Sectie: Sanctiecategorieën -->
+            <div id="sancties" class="section">
+                <h2>2. Sanctiecategorieën</h2>
+                <p>De sanctiecategorieën dienen als richtlijnen voor de bestraffing van overtredingen. Staff kan, met motivatie, afwijken van deze richtlijnen in redelijkheid en billijkheid.</p>
+                
+                <table class="sanction-table">
+                    <thead>
+                        <tr>
+                            <th>Categorie</th>
+                            <th>Straf (richtlijn)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1</strong></td>
+                            <td>Waarschuwing + 50 taken</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2</strong></td>
+                            <td>100 taken</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td>200 taken</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td>1‑dag ban + 300 taken</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5</strong></td>
+                            <td>2‑dagen ban + 450 taken</td>
+                        </tr>
+                        <tr>
+                            <td><strong>6</strong></td>
+                            <td>3‑dagen ban + 600 taken</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7</strong></td>
+                            <td>1‑week ban + 750 taken</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8</strong></td>
+                            <td>Permanente ban</td>
+                        </tr>
+                        <tr>
+                            <td><strong>9</strong></td>
+                            <td>Permanente ban + volledige account‑reset</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>Opmerking:</strong> De sanctie kan variëren afhankelijk van de ernst en herhaling van de overtreding. Staff kan in redelijkheid en billijkheid afwijken van deze richtlijnen.</p>
+            </div>
+            
+            <!-- Sectie: Cheats & Exploits -->
+            <div id="cheats" class="section">
+                <h2>3. Cheats & Exploits</h2>
+                
+                <h3>3.1 Cheats / Externe software / hardware</h3>
+                <p><strong>Verboden</strong> is elke vorm van externe software, hardware of cheats (bijv. aim‑assist, ESP, DMA, spoofing, cheat‑clients, “cross‑hair‑mods”, “blood‑packs”, BetterDiscord, stretched‑play (alleen 16:9/16:10), graphics‑packs die speelvoordeel opleveren, …).</p>
+                
+                <ul>
+                    <li>Het gebruik van <strong>cross‑hair‑mods</strong> wordt “gedoogd” (zichtbaar in clips/streams of toegeven) – geen straf.</li>
+                    <li>Het lid zijn of zijn geweest van een cheat‑Discord is verboden.</li>
+                    <li>Refunds voor (*)-producten alleen met <strong>100 % bewijs</strong>.</li>
+                </ul>
+                
+                <h3>3.2 PC‑checks</h3>
+                <p>De server voert <strong>vrijwillige</strong> PC‑controles uit om de veiligheid te waarborgen. Een verplichte anti‑virus (Windows Defender) is aanbevolen, maar <strong>niet verplicht</strong>. Wie niet wil meewerken kan geweigerd worden, maar er wordt geen automatische ban opgelegd.</p>
+                
+                <h3>3.3 Exploits / Bugs</h3>
+                <p>Het gebruik van exploits is verboden. Meld bugs via een ticket. Niet melden en toch gebruiken kan leiden tot een sanctie van <strong>cat. 4–9</strong>, afhankelijk van de ernst.</p>
+                
+                <h3>3.4 Alternatieve accounts</h3>
+                <p>Geld of items van een alternatief account (of van vrienden) aan jezelf doorgeven zonder speelintentie is verboden (cat. 8).</p>
+                
+                <h3>3.5 IRL‑trading</h3>
+                <p>Het verhandelen van items, diensten, geld of accounts buiten het spel (IRL) is ten strengste verboden (cat. 8‑9).</p>
+                
+                <h3>3.6 Massa‑RDM/VDM</h3>
+                <p>Massale moord zonder geldige RP‑aanleiding (RDM/VDM) is verboden (cat. 8‑9).</p>
+                
+                <h3>3.7 Ticket/Refund‑fraude</h3>
+                <p>Informatie achterhouden, manipulatie of meerdere refund‑aanvragen voor dezelfde situatie is verboden (cat. 8‑9). Het opnieuw indienen van een reeds afgekeurd ticket wordt bestraft met <strong>1 week ban + 1500 taken</strong>.</p>
+                
+                <h3>3.8 Doxen / Chantage</h3>
+                <p>Het verspreiden of dreigen met het openbaar maken van niet‑openbare persoonlijke informatie is verboden (cat. 8‑9).</p>
+            </div>
+            
+            <!-- Sectie: Roleplay - Regels -->
+            <div id="roleplay" class="section">
+                <h2>4. Roleplay – Regels & Voorbeelden</h2>
+                
+                <h3>4.1 FailRP</h3>
+                <p>Opzettelijk verpesten of slecht afmaken van scenario’s, niet meewerken, onlogisch gedrag (cat. 1‑5).</p>
+                <ul>
+                    <li>Voertuig/inhoud stelen zonder RP‑reden.</li>
+                    <li>Praten terwijl dood.</li>
+                    <li>Niet meewerken na ambulance‑behandeling.</li>
+                    <li>Auto openlaten zonder goede RP‑aanleiding.</li>
+                    <li>Bewust wapens geven aan nieuwkomers (< 1 dag speeltijd).</li>
+                    <li>“Cop‑baiten”, OOC‑praten (karakterbreuk).</li>
+                    <li>Overheidslogo’s/namen dragen zonder dienstverband.</li>
+                </ul>
+                
+                <h3>4.2 Powergaming</h3>
+                <p>Oneerlijk voordeel naar je toe trekken (cat. 1‑5).</p>
+                <ul>
+                    <li>Auto opnieuw op slot doen terwijl de overweldiger nog in zicht is.</li>
+                    <li>/me‑handelingen zonder benodigde items.</li>
+                    <li>Emotes (bv. /sleep) tijdens beschoten worden.</li>
+                    <li>Z‑spier gebruiken om spelers te lokaliseren.</li>
+                </ul>
+                
+                <h3>4.3 Microfoon</h3>
+                <p>Werkende, verstaanbare microfoon verplicht; alleen NL/EN toegestaan (cat. 1‑5).</p>
+                <p><strong>Misbruik</strong>: earrape, soundpads, onmenselijke stemvervormers (verboden).</p>
+                
+                <h3>4.4 “Kloten” op gang‑/terrein</h3>
+                <p>Zonder geldige reden op andermans gangterrein komen (cat. 4‑7).</p>
+                <ul>
+                    <li>Terrein betreden via muur.</li>
+                    <li>Schieten naast terrein zonder reden.</li>
+                    <li>Fake‑meldingen naar overheidsinstanties.</li>
+                </ul>
+                
+                <h3>4.5 Metagamen</h3>
+                <p>OOC‑info IC gebruiken (cat. 3‑7).</p>
+                <ul>
+                    <li>Schermdelen of niet gemute/deafened in Discord tijdens het spel.</li>
+                    <li>Ingame info doorgeven via externe Discord.</li>
+                </ul>
+                
+                <h3>4.6 Combatloggen</h3>
+                <p>Regels voor verblijf na gevechten:</p>
+                <ul>
+                    <li><strong>30 min</strong> in de stad blijven na laatste schot.</li>
+                    <li>Binnen <strong>10 min</strong> verlaten na illegale activiteit, RP‑scenario of crash (5 min om terug te zijn).</li>
+                </ul>
+                
+                <table class="sanction-table">
+                    <thead>
+                        <tr>
+                            <th>Overtreding</th>
+                            <th>Straf</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1e overtreding</td>
+                            <td>3‑dagen ban + 750 taken + inventory‑clear</td>
+                        </tr>
+                        <tr>
+                            <td>2e overtreding</td>
+                            <td>1‑week ban + 1250 taken + inventory‑clear</td>
+                        </tr>
+                        <tr>
+                            <td>3e overtreding</td>
+                            <td>2‑weken ban + 1500 taken + inventory‑clear</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>4.7 NVOL (No Value of Life)</h3>
+                <p>Je moet je leven realistisch waarderen. Overtredingen worden bij herhaling verzwaard.</p>
+                
+                <table class="sanction-table">
+                    <thead>
+                        <tr>
+                            <th>Categorie</th>
+                            <th>Straf (1e keer)</th>
+                            <th>Straf (2e keer)</th>
+                            <th>Straf (3e keer)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Geen wapen, gevaarlijke stunts</td>
+                            <td>Cat 1</td>
+                            <td>Cat 3</td>
+                            <td>Cat 5</td>
+                        </tr>
+                        <tr>
+                            <td>Geen wapen, niet meewerken</td>
+                            <td>Cat 2</td>
+                            <td>Cat 4</td>
+                            <td>Cat 6</td>
+                        </tr>
+                        <tr>
+                            <td>Wel wapen, niet meewerken</td>
+                            <td>Cat 3</td>
+                            <td>Cat 5</td>
+                            <td>Cat 7</td>
+                        </tr>
+                        <tr>
+                            <td>Terugschieten/steek</td>
+                            <td>Cat 4</td>
+                            <td>Cat 6</td>
+                            <td>Cat 8</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><strong>Uitzondering</strong>: realistische sprongen (die je IRL zou kunnen maken) zijn toegestaan. Een sprong die je IRL niet zou overleven geldt als NVOL.</p>
+                
+                <h3>4.8 Stem‑ & Gezichtsherkenning</h3>
+                <p>Herkenning toegestaan als je de persoon ingame hebt gezien/ gehoord. Bij bewuste stemverandering mag je niet herkennen. Stemvervormers toegestaan voor criminele RP, maar moeten menselijk klinken (robot‑/baby‑stemmen verboden) (cat. 3‑5).</p>
+                
+                <h3>4.9 Onderwereld</h3>
+                <p>Gedrag moet aansluiten bij crimineel‑RP (cat. 1‑9).</p>
+                
+                <ul>
+                    <li>Niet vermoorden na rip, tenzij uitdaging/vecht of niet‑meewerken.</li>
+                    <li>Alleen overvallen als de ander aantoonbaar bij de onderwereld betrokken is.</li>
+                    <li>Geldige overval‑reden geldt <strong>12 uur</strong> (vervalt na eerdere rip).</li>
+                    <li><strong>Fysiek zien</strong> van wapen verplicht bij wapenoverval; bij call‑out is de caller medeverantwoordelijk.</li>
+                    <li>Overval‑redenen gelden voor <strong>alle inzittenden</strong> van een voertuig.</li>
+                    <li>Oplichten alleen met illegale goederen; geen loodsen‑fraude (zie 4.13).</li>
+                    <li>Geen “revenge‑kill” op whitelisted jobs, tenzij binnen <strong>1 week</strong> met RP‑bewijs.</li>
+                </ul>
+                
+                <p><strong>Afzetting / counteren</strong> – tijdens een politie‑afzetting is counteren verboden; na <strong>10 min</strong> verlaten is de bescherming weg. Op water (geen goede afzetting) is counteren niet toegestaan.</p>
+                
+                <p><strong>Gijzelen</strong>: minimaal <strong>3</strong> agenten aanwezig; bij ≥ 7 agenten mogen ook agenten gegijzeld worden (alleen bij goede RP). Onderhandelaars mogen niet beschoten worden.</p>
+                
+                <p><strong>AP‑verbod</strong>: Criminele activiteiten in een appartement zijn verboden.</p>
+            </div>
+            
+            <!-- Sectie: Voertuigen -->
+            <div id="voertuigen" class="section">
+                <h2>5. Voertuigen</h2>
+                
+                <h3>5.1 Gebruik & Pitten</h3>
+                <p>Realistisch rijden is verplicht.</p>
+                
+                <ul>
+                    <li><strong>Pit‑snelheid</strong>: boven <strong>120 km/h</strong> is verboden.</li>
+                    <li><strong>Categorie‑volgorde</strong>: motor‑loze < motor‑voertuigen < sport/hyper < SUV’s < bussen/vrachtwagens.</li>
+                    <li><strong>Onverharde wegen</strong>: max <strong>150 km/h</strong> (parkeren verboden).</li>
+                    <li><strong>Pitten van motoren</strong> alleen indien vanaf de motor wordt geschoten; mag alleen met hoger‑categorie voertuig en onder <strong>60 km/h</strong>, zonder levensgevaar.</li>
+                    <li><strong>Brake‑checken</strong> is niet toegestaan; houd voldoende afstand.</li>
+                    <li>Geen voertuigen door gebouwen, geen voertuig als wapen, deuren mogen geblokkeerd worden (poorten alleen als je er te voet in/out kunt).</li>
+                </ul>
+                
+                <h3>5.2 VDM (Vehicle Deathmatch)</h3>
+                <p>Voertuig als wapen gebruiken is <strong>altijd</strong> verboden (cat. 3‑9).</p>
+                
+                <h3>5.3 GTA‑style Driving (verzacht)</h3>
+                <p>Onrealistisch rijden is verboden (cat. 3).</p>
+                <ul>
+                    <li><strong>nextUp‑Roleplay</strong>: realistische sprongen (die je IRL zou kunnen maken) zijn toegestaan; een sprong die je IRL niet zou overleven geldt als <strong>NVOL</strong>.</li>
+                    <li><strong>Verboden</strong>: onnodig rammen, gebruik van obstakels om overheen te springen, met lekke band(en) harder dan <strong>130 km/h</strong>, blokkade boven <strong>60 km/h</strong>.</li>
+                </ul>
+                
+                <h3>5.4 Scammen van Voertuigen</h3>
+                <p>Verboden. Bij aanschaf: zelf upgrades controleren; in‑game koopcontract via wegenwacht wordt gebruikt.</p>
+                
+                <ul>
+                    <li><strong>Uitlenen</strong>: maak duidelijke afspraken; verkopen van geleende voertuigen is verboden.</li>
+                    <li><strong>Uitlenen op eigen risico</strong> (bijv. ban).</li>
+                </ul>
+                
+                <h3>5.5 Landen van Heli‑/Vliegtuigen</h3>
+                <p>Toegestaan mits veilig en realistisch.</p>
+                <ul>
+                    <li><strong>Locatie‑eisen</strong>: vrij van obstakels (geen wegen, behalve heli‑landingsplaatsen), binnen <strong>100 m</strong> geen ander luchtvaartuig.</li>
+                    <li><strong>Parachuteren</strong> alleen boven zee.</li>
+                    <li><strong>Vliegbrevet</strong> verplicht.</li>
+                    <li>Overtreding: cat. 3‑9 en mogelijk intrekking vliegbrevet.</li>
+                </ul>
+            </div>
+            
+            <!-- Sectie: Wapens -->
+            <div id="wapens" class="section">
+                <h2>6. Wapens</h2>
+                
+                <h3>6.1 RDM (Random Deathmatch)</h3>
+                <p>Alleen doden binnen een RP‑context (cat. 4‑9).</p>
+                
+                <h3>6.2 Wapengebruik</h3>
+                <p>Realistisch en voor RP. Omstanders eerst wegsturen (verbale waarschuwing of waarschuwingsschot).</p>
+                <ul>
+                    <li>Bij terugkeer na waarschuwing: dodelijk vuur toegestaan (bij voorkeur voertuig onklaar maken) (cat. 4).</li>
+                    <li>Ongepast wapenmisbruik kan leiden tot inname door staff.</li>
+                </ul>
+                
+                <p><strong>Eiland</strong>: op personen schieten mag met geldige reden; massa‑beschieting/​-moord is verboden.</p>
+            </div>
+            
+            <!-- Sectie: Algemene Regels -->
+            <div id="algemene" class="section">
+                <h2>7. Algemene Regels</h2>
+                
+                <h3>7.1 Diverse</h3>
+                <ul>
+                    <li><strong>Steamnamen</strong> van staffleden mogen niet in RP‑namen worden gebruikt (ook niet in varianten).</li>
+                    <li><strong>Bodycams</strong>: Overheidsdiensten zijn verplicht zichtbaar te dragen als bewijs; burgers mogen video/foto‑bewijs aanleveren.</li>
+                    <li><strong>Discord</strong>: geen externe Discord voor RP; in de stad moet je dubbel gemute zijn en niet streamen (streamen = metagaming).</li>
+                    <li><strong>Remake/Look‑alike</strong>: verboden een remake van NextUp te maken of deel uit te maken van staff/dev/management van een dergelijk project.</li>
+                    <li><strong>Demonstraties</strong>: alleen met schriftelijke toestemming van Hoofd‑ of Senior‑staff, duidelijke leiding en aangewezen locatie.</li>
+                    <li><strong>Erotische RP</strong>: verboden (dansen in clubs blijft binnen de grenzen).</li>
+                </ul>
+                
+                <h3>7.2 Refunds (Richtlijn)</h3>
+                <p><strong>Voorwaarden</strong></p>
+                <ul>
+                    <li>Clips van <strong>eigen POV</strong>, min. <strong>5 minuten</strong>, met geluid.</li>
+                    <li>ID’s op de clip.</li>
+                    <li>Bewijs van auto‑inhoud/​inventaris.</li>
+                    <li>Link naar geüploade clip.</li>
+                    <li>Geen impact van andere speler = geen refund.</li>
+                    <li>Zelf geen APV‑overtredingen in de clip.</li>
+                    <li>Bij afname van geld/​items/​voertuigen kan staff een equivalente in‑game afname doen (geen vergoeding voor overwaarde).</li>
+                    <li><strong>Cheats</strong>: alleen refund bij dood door cheater met <strong>100 % bewijs</strong>.</li>
+                    <li>Overtreding van refund‑regels → cat. 5‑8.</li>
+                </ul>
+                
+                <p><strong>Second‑opinion‑klacht</strong> (nadat refund is afgekeurd) wordt bestraft met <strong>2000 taken</strong>.</p>
+                
+                <h3>7.3 Taalgebruik</h3>
+                <p>Ongepast taalgebruik, beledigingen (ook naar familie of ziektes), racistische/sekse‑istische opmerkingen → cat. 5‑8.</p>
+                
+                <h3>7.4 Haat / Toxic gedrag</h3>
+                <p>Toxic gedrag, bedreigen, intimideren (ook buiten de server) is verboden (cat. 3‑8). De uiteindelijke straf kan variëren na beoordeling van de situatie.</p>
+            </div>
+            
+            <!-- Sectie: Staffzaken -->
+            <div id="staff" class="section">
+                <h2>8. Staffzaken</h2>
+                
+                <h3>8.1 Gebruik van /report</h3>
+                <p><strong>Één</strong> report per <strong>4 minuten</strong>. Reports moeten duidelijk zijn. Meer dan <strong>3</strong> reports in één minuut = spam (cat. 1‑3).</p>
+                
+                <h3>8.2 Eerlijkheid tegen staff</h3>
+                <p>Liegen of informatie achterhouden tegen staff is verboden (cat. 6‑9).</p>
+                
+                <h3>8.3 Voordoen als staff</h3>
+                <p>Zich voordoen als staff of staff‑uitspraken doen is verboden (cat. 6‑9).</p>
+                
+                <h3>8.4 Staff‑misbruik</h3>
+                <p>Oneerlijke voordelen of misbruik van permissies als staff is verboden (cat. 8‑9).</p>
+            </div>
+            
+            <!-- Sectie: Slotbepalingen -->
+            <div id="slotbepaling" class="section">
+                <h2>9. Slotbepalingen</h2>
+                <p>Deze APV is leidend. Staff kan (gemotiveerd) afwijken in redelijkheid en billijkheid. De volledige tekst (incl. eventuele bijlagen/foto’s) heeft voorrang boven samenvattingen.</p>
+            </div>
+            
+            <div class="footer">
+                <p>© 2023 NextUp Roleplay. Alle rechten voorbehouden.</p>
+                <p>Veel speelplezier op NextUp Roleplay!</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Activeer juiste sectie in de navigatie
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Verwijder actieve klasse van alle items
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                // Voeg actieve klasse toe aan het geklikte item
+                this.classList.add('active');
+            });
+        });
+        
+        // Scroll naar sectie bij klik
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
